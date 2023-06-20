@@ -23,4 +23,24 @@ app.post("/game", async (request, response) => {
     }
 })
 
+app.patch('/game/:id', async (req, res) => {
+    try {
+        await gameModel.findByIdAndUpdate(req.params.id, req.body)
+        await gameModel.save()
+        res.send(game)
+    } catch (error) {
+        res.status(500).send(error)
+    }
+})
+
+app.delete('/game/:id', async (req, res) => {
+    try {
+        const game = await gameModel.findByIdAndDelete(req.params.id)
+
+        if(!game) res.status(404).send("No game found")
+    } catch (error) {
+        res.status(500).send(error)
+    }
+})
+
 export default app
